@@ -40,6 +40,7 @@ public class Ball : MonoBehaviour {
 
 			Vector2 tweak = new Vector2 (Random.Range (0f, 0.2f), Random.Range (0f, 0.2f));
 			this.rigidbody2D.velocity += tweak;
+			Debug.Log (this.rigidbody2D.velocity);
 		}
 	}
 }

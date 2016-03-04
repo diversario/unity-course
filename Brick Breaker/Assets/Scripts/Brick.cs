@@ -5,6 +5,8 @@ public class Brick : MonoBehaviour {
 	public AudioClip crack;
 	public Sprite[] hitSprites;
 
+	public GameObject Smoke;
+
 	int timesHit;
 
 	private LevelManager levelManager;
@@ -29,7 +31,7 @@ public class Brick : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter2D(Collision2D collision) {
-		AudioSource.PlayClipAtPoint (crack, this.transform.position);
+		AudioSource.PlayClipAtPoint (crack, this.transform.position, 0.5f);
 
 		if (isBreakable) {
 			HandleHit();
@@ -44,10 +46,16 @@ public class Brick : MonoBehaviour {
 
 		if (timesHit >= maxHits) {
 			Destroy (gameObject);
+			EmitSmoke ();
 			levelManager.BrickDestroyed ();
 		} else {
 			UpdateSprite ();
 		}
+	}
+
+	void EmitSmoke () {
+		GameObject smoke = Object.Instantiate (Smoke, this.transform.position, Quaternion.identity) as GameObject;
+		smoke.particleSystem.startColor = this.GetComponent<SpriteRenderer> ().color;
 	}
 
 	void UpdateSprite() {
@@ -56,6 +64,8 @@ public class Brick : MonoBehaviour {
 
 		if (sprite) {
 			this.GetComponent<SpriteRenderer> ().sprite = sprite;
+		} else {
+			Debug.LogError("Where's the sprite for hit #" + timesHit + "!");
 		}
 	}
 
