@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class Brick : MonoBehaviour {
+	public AudioClip crack;
 	public Sprite[] hitSprites;
 
 	int timesHit;
@@ -28,6 +29,8 @@ public class Brick : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter2D(Collision2D collision) {
+		AudioSource.PlayClipAtPoint (crack, this.transform.position);
+
 		if (isBreakable) {
 			HandleHit();
 		}

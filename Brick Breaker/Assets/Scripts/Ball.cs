@@ -10,6 +10,8 @@ public class Ball : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		this.audio.volume = 0.5f;
+
 		paddle = GameObject.FindObjectOfType<Paddle> ();
 
 		_paddleToBallVector = this.transform.position - paddle.transform.position;
@@ -32,7 +34,12 @@ public class Ball : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collision) {
 		if (_gameStarted) {
-			audio.Play ();
+			if (collision.gameObject.CompareTag("Untagged")) {
+				audio.Play ();
+			}
+
+			Vector2 tweak = new Vector2 (Random.Range (0f, 0.2f), Random.Range (0f, 0.2f));
+			this.rigidbody2D.velocity += tweak;
 		}
 	}
 }
